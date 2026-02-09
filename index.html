@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Farida ❤️</title>
+    <title>❤️ I Love you, Farida</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
         body {
@@ -38,7 +38,7 @@
         .buttons {
             display: flex;
             justify-content: center;
-            gap: 50px;
+            gap: 50px; /* This controls the space between them */
             align-items: center;
             height: 100px;
         }
@@ -68,10 +68,11 @@
         #noBtn {
             background-color: #590d22;
             color: white;
-            position: absolute;
+            /* CHANGED: This keeps it side-by-side with 'Yes' at the start */
+            position: relative; 
+            z-index: 11;
         }
 
-        /* Floating Hearts Background */
         .heart {
             position: absolute;
             color: #ff758f;
@@ -98,10 +99,12 @@
     </div>
 
     <script>
-        // Runaway Button Logic
         const noBtn = document.getElementById('noBtn');
         
         noBtn.addEventListener('mouseover', () => {
+            // SWITCH TO ABSOLUTE: The moment it's approached, it breaks out of the layout
+            noBtn.style.position = 'fixed'; 
+            
             const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
             const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
             
@@ -109,7 +112,6 @@
             noBtn.style.top = `${y}px`;
         });
 
-        // Background Hearts
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
@@ -117,7 +119,6 @@
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
             document.body.appendChild(heart);
-            
             setTimeout(() => { heart.remove(); }, 6000);
         }
         setInterval(createHeart, 300);
