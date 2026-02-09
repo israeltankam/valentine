@@ -195,7 +195,21 @@
             img.src = `src/pics/${randomPic}`;
 			img.alt = "I Love You ❤️";
             img.className = 'floating-pic';
-            
+
+			// IF THE IMAGE FAILS TO LOAD:
+		    img.onerror = function() {
+		        // Option A: Hide it entirely
+		        this.style.display = 'none'; 
+		        
+		        // Option B: Or replace it with a heart so the screen stays full
+		        const heartFallback = document.createElement('div');
+		        heartFallback.innerHTML = "💖";
+		        heartFallback.className = 'heart'; // Uses your existing heart styles
+		        heartFallback.style.left = img.style.left;
+		        heartFallback.style.top = img.style.top;
+		        document.body.appendChild(heartFallback);
+		    };
+					
             img.style.left = Math.random() * 80 + 'vw';
             img.style.top = Math.random() * 80 + 'vh';
             
@@ -219,4 +233,5 @@
 </body>
 
 </html>
+
 
