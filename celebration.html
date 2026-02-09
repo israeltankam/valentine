@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>I Love You Farida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Lora:ital@1&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #000;
+            color: white;
+            font-family: 'Lora', serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Photo Explosion Styles */
+        #photo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-pic {
+            position: absolute;
+            width: 200px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: appear 4s ease-in-out forwards;
+        }
+
+        @keyframes appear {
+            0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(1.2) rotate(10deg); opacity: 0; }
+        }
+
+        /* Content Styles */
+        .final-content {
+            position: relative;
+            margin-top: 10vh;
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            animation: fadeIn 3s ease-in forwards;
+            animation-delay: 1s;
+            padding: 20px;
+        }
+		/* Floating Hearts Background */
+        .heart {
+            position: absolute;
+            color: #ff758f;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+        }
+		@keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+        #lastImg {
+            width: 300px;
+            border-radius: 15px;
+            border: 8px solid #fff;
+            animation: zoomIn 5s infinite alternate;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .poem {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 40px auto;
+            white-space: pre-line;
+            font-style: italic;
+        }
+
+        /* Music Fallback Button */
+        #musicBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 12px 25px;
+            background: rgba(255, 77, 109, 0.8);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: opacity 0.5s;
+        }
+
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <audio id="romanticMusic" loop>
+        <source src="src/music/romantic-song.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="musicBtn" onclick="playMusic()">Click for Music 🎵</button>
+
+    <div id="photo-container"></div>
+
+    <div class="final-content">
+        <img src="src/pics/last.jpg" id="lastImg" alt="Our Special Moment">
+        <div class="poem">
+            Dear <i>Petite Femme</i>,
+            Through days that bent beneath their weight,
+            when silence felt too loud,
+            and the night asked more of us
+            than we thought we could give,
+            We stayed.
+            Not because it was easy,
+            but because loving you
+            has never been a question of weather.
+            Storms pass.
+            What we are does not.
+            I am still here
+            for a long road,
+            for slow mornings and fierce dreams,
+            working quietly on myself
+            so I can stand taller beside you,
+            be softer where you need warmth,
+            be stronger where you need shelter,
+            become the best of me for you.
+            Thank you for the laughter
+            that surprised us in the middle of chaos,
+            for the light you pour into ordinary days,
+            for every good moment we’ve already held.
+            We will gather many more ;
+            more sunsets that feel like promises,
+            more victories,
+            more peace,
+            more us.
+            No matter the season,
+            no matter the climb,
+            I am here.
+            I love you.
+
+            Happy Valentine's Day
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('romanticMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
+        // 1. Logic to try and autoplay music
+        window.addEventListener('load', () => {
+            const playPromise = audio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Autoplay started! No button needed.
+                    console.log("Autoplay started successfully");
+                }).catch(error => {
+                    // Autoplay was prevented. Show the button.
+                    musicBtn.style.display = 'block';
+                });
+            }
+        });
+
+        // 2. Manual Play Function
+        function playMusic() {
+            audio.play();
+            musicBtn.style.opacity = '0';
+            setTimeout(() => { musicBtn.style.display = 'none'; }, 500);
+        }
+
+        // 3. Photo Explosion Logic
+        const photoFiles = ['pic (1).jpg', 'pic (2).jpg', 'pic (3).jpg', 'pic (4).jpg', 'pic (5).jpg', 'pic (6).jpg', 'pic (7).jpg',
+		'pic (8).jpg', 'pic (9).jpg', 'pic (10).jpg', 'pic (11).jpg', 'pic (12).jpg', 'pic (13).jpg', 'pic (14).jpg', 'pic (15).jpg']; // ADD YOUR REAL FILENAMES HERE
+        const container = document.getElementById('photo-container');
+
+        function spawnPhoto() {
+            const img = document.createElement('img');
+            const randomPic = photoFiles[Math.floor(Math.random() * photoFiles.length)];
+            img.src = `src/pics/${randomPic}`;
+            img.className = 'floating-pic';
+            
+            img.style.left = Math.random() * 80 + 'vw';
+            img.style.top = Math.random() * 80 + 'vh';
+            
+            container.appendChild(img);
+            setTimeout(() => img.remove(), 7000);
+        }
+
+        setInterval(spawnPhoto, 1500);
+		
+		function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 6000);
+        }
+        setInterval(createHeart, 400); // Spawns hearts alongside photos
+    </script>
+</body>
+</html>
