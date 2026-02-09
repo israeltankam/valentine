@@ -193,6 +193,7 @@
             const img = document.createElement('img');
             const randomPic = photoFiles[Math.floor(Math.random() * photoFiles.length)];
             img.src = `src/pics/${randomPic}`;
+			img.alt = "I Love You ❤️";
             img.className = 'floating-pic';
             
             img.style.left = Math.random() * 80 + 'vw';
@@ -216,4 +217,5 @@
         setInterval(createHeart, 400); // Spawns hearts alongside photos
     </script>
 </body>
+
 </html>
